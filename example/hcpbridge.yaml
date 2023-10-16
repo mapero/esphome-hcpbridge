@@ -1,4 +1,5 @@
 esphome:
+  name: hcpbridge
 
 external_components:
   - source: github://mapero/esphome-hcpbridge
