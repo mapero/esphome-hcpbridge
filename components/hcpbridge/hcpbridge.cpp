@@ -18,7 +18,7 @@ void HCPBridgeComponent::control(const cover::CoverCall &call) {
 }
 
 void HCPBridgeComponent::setup() {
-  hoermannEngine->setup();
+  HoermannGarageEngine::getInstance().setup();
 }
 
 void HCPBridgeComponent::update() {
