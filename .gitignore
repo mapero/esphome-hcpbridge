@@ -31,4 +31,6 @@
 *.out
 *.app
 
-example/.esphome/
+.esphome
+
+**/__pycache__

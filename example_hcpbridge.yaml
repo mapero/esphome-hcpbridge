@@ -1,11 +1,16 @@
 esphome:
   name: hcpbridge
+  libraries:
+    - emelianov/modbus-esp8266
 
 external_components:
-  - source: github://mapero/esphome-hcpbridge
+  - source: components
 
 esp32:
   board: adafruit_feather_esp32s3
   framework:
     type: arduino
 
+cover:
+  - platform: hcpbridge
+    name: Garage door
