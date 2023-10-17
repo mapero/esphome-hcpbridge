@@ -1,3 +1,5 @@
+// Credits to https://github.com/Gifford47/HCPBridgeMqtt for the initial code base
+
 #include "hoermann.h"
 
 // arg1,arg4> command start value

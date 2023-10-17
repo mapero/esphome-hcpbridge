@@ -1,3 +1,5 @@
+// Credits to https://github.com/Gifford47/HCPBridgeMqtt for the initial code base
+
 #ifndef HOERMANN_H_
 #define HOERMANN_H_
 #define MODBUSRTU_DEBUG 1
