@@ -34,3 +34,4 @@
 .esphome
 
 **/__pycache__
+secrets.yaml
