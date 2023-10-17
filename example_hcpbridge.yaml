@@ -2,6 +2,13 @@ esphome:
   name: hcpbridge
   libraries:
     - emelianov/modbus-esp8266
+  platformio_options:
+    board_build.f_cpu: 240000000L
+    board_build.flash_mode: qio
+    monitor_speed: 9600
+    monitor_filters: esp32_exception_decoder
+    lib_ldf_mode: deep+
+    # board_build.f_flash: 40000000L
 
 external_components:
   - source: components
@@ -14,3 +21,20 @@ esp32:
 cover:
   - platform: hcpbridge
     name: Garage door
+
+web_server:
+  port: 80
+
+wifi:
+  ssid: "ssid"
+  password: "password"
+
+# Enable logging
+logger:
+  level: DEBUG
+  baud_rate: 9600
+
+# Example configuration entry
+ota:
+  safe_mode: true
+
