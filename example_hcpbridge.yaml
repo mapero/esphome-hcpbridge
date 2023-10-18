@@ -20,7 +20,9 @@ esp32:
 
 cover:
   - platform: hcpbridge
-    name: Garage door
+    name: Garage Door
+
+hcpbridge:
 
 web_server:
   port: 80
