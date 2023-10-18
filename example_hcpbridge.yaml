@@ -18,11 +18,16 @@ esp32:
   framework:
     type: arduino
 
+hcpbridge:
+
 cover:
   - platform: hcpbridge
     name: Garage Door
 
-hcpbridge:
+switch:
+  - platform: hcpbridge
+    name: Garage Light
+
 
 web_server:
   port: 80

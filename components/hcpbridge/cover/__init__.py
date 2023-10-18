@@ -10,7 +10,7 @@ from .. import hcpbridge_ns, HCPBridge, CONF_HCPBridge_ID
 
 DEPENDENCIES = ['hcpbridge']
 
-HCPBridgeCover = hcpbridge_ns.class_("HCPBridgeCover", cover.Cover, cg.Component)
+HCPBridgeCover = hcpbridge_ns.class_("HCPBridgeCover", cover.Cover, cg.PollingComponent)
 
 CONFIG_SCHEMA = cv.All(
   cover.COVER_SCHEMA.extend({
