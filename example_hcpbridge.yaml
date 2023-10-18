@@ -28,6 +28,7 @@ switch:
   - platform: hcpbridge
     name: Garage Light
 
+api:
 
 web_server:
   port: 80
@@ -40,6 +41,9 @@ wifi:
 logger:
   level: DEBUG
   baud_rate: 9600
+  logs:
+    hcpbridge.switch: DEBUG
+    hcpbridge.cover: DEBUG
 
 # Example configuration entry
 ota:
