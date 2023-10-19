@@ -59,11 +59,18 @@ ota:
   safe_mode: true
 ```
 
+# Project
+
+- HCPBridge from `Tysonpower` on an `Hörmann Promatic 4`
+
+You can find more information on the project here: [Hörmann garage door via MQTT](https://community.home-assistant.io/t/hormann-garage-door-via-mqtt/279938/340)
+
 # ToDo
 
 - [x] Initial working version
 - [ ] Use esphome modbus component instead of own code
 - [ ] Map additional functions to esphome
+- [ ] Expert options for the HCPBridge component (GPIOs ...)
 
 # Contribute
 
