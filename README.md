@@ -33,6 +33,8 @@ esp32:
     type: arduino
 
 hcpbridge:
+  is_connected:
+    name: "HCPBridge Connected"
 
 cover:
   - platform: hcpbridge
@@ -60,6 +62,10 @@ logger:
 ota:
   safe_mode: true
 ```
+
+### Home Assistant
+
+![Home Assistant Device Overview](docs/device_overview.png)
 
 ### Cover
 
@@ -89,6 +95,7 @@ You can find more information on the project here: [Hörmann garage door via MQT
 - [x] Initial working version
 - [ ] Use esphome modbus component instead of own code
 - [ ] Map additional functions to esphome
+- [ ] Use callbacks instead of pollingComponent
 - [ ] Expert options for the HCPBridge component (GPIOs ...)
 
 # Contribute

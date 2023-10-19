@@ -19,6 +19,8 @@ esp32:
     type: arduino
 
 hcpbridge:
+  is_connected:
+    name: "HCPBridge Connected"
 
 cover:
   - platform: hcpbridge
