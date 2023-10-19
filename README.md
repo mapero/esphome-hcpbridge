@@ -9,6 +9,8 @@ This is a esphome-based adaption of the HCPBridge. Credits for the initial devel
 
 ## Usage
 
+### Example esphome configuration
+
 ```
 esphome:
   name: hcpbridge
@@ -31,6 +33,8 @@ esp32:
     type: arduino
 
 hcpbridge:
+  is_connected:
+    name: "HCPBridge Connected"
 
 cover:
   - platform: hcpbridge
@@ -59,6 +63,27 @@ ota:
   safe_mode: true
 ```
 
+### Home Assistant
+
+![Home Assistant Device Overview](docs/device_overview.png)
+
+### Cover
+
+The component provides a cover component to control the garage door.
+
+### Switch
+
+The component provides a switch component to turn the light off and on.
+
+### Services
+
+Additionally, when using the cover component, you can use the following services:
+
+- `esphome.hcpbridge_go_to_close`: To close the garage door
+- `esphome.hcpbridge_go_to_half`: To move the garage door to half position
+- `esphome.hcpbridge_go_to_vent`: To move the garage door to the vent position
+- `esphome.hcpbridge_go_to_open`: To open the garage door
+
 # Project
 
 - HCPBridge from `Tysonpower` on an `Hörmann Promatic 4`
@@ -70,6 +95,7 @@ You can find more information on the project here: [Hörmann garage door via MQT
 - [x] Initial working version
 - [ ] Use esphome modbus component instead of own code
 - [ ] Map additional functions to esphome
+- [ ] Use callbacks instead of pollingComponent
 - [ ] Expert options for the HCPBridge component (GPIOs ...)
 
 # Contribute

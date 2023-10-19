@@ -6,6 +6,38 @@ namespace esphome
   {
     static const char *const TAG = "hcpbridge.cover";
 
+    void HCPBridgeCover::setup()
+    {
+      register_service(&HCPBridgeCover::on_go_to_open, "go_to_open");
+      register_service(&HCPBridgeCover::on_go_to_close, "go_to_close");
+      register_service(&HCPBridgeCover::on_go_to_half, "go_to_half");
+      register_service(&HCPBridgeCover::on_go_to_vent, "go_to_vent");
+    }
+
+    void HCPBridgeCover::on_go_to_open()
+    {
+      ESP_LOGD(TAG, "HCPBridgeCover::on_go_to_open() - opening");
+      this->parent_->engine->openDoor();
+    }
+
+    void HCPBridgeCover::on_go_to_close()
+    {
+      ESP_LOGD(TAG, "HCPBridgeCover::on_go_to_close() - closing");
+      this->parent_->engine->closeDoor();
+    }
+
+    void HCPBridgeCover::on_go_to_half()
+    {
+      ESP_LOGD(TAG, "HCPBridgeCover::on_go_to_half() - half opening");
+      this->parent_->engine->halfPositionDoor();
+    }
+
+    void HCPBridgeCover::on_go_to_vent()
+    {
+      ESP_LOGD(TAG, "HCPBridgeCover::on_go_to_vent() - venting");
+      this->parent_->engine->ventilationPositionDoor();
+    }
+
     cover::CoverTraits HCPBridgeCover::get_traits()
     {
       auto traits = cover::CoverTraits();
@@ -31,7 +63,8 @@ namespace esphome
         {
           this->parent_->engine->closeDoor();
         }
-        else {
+        else
+        {
           this->parent_->engine->setPosition((int)call.get_position().value() * 100.0f);
         }
       }
@@ -41,34 +74,36 @@ namespace esphome
     {
       if (!this->parent_->engine->state->valid)
       {
-        ESP_LOGD(TAG, "HCPBridgeCover::update() - state is invalid");
-        this->status_set_warning();
+        if (!this->status_has_warning())
+        {
+          ESP_LOGD(TAG, "HCPBridgeCover::update() - state is invalid");
+          this->status_set_warning();
+        }
         return;
       }
-      ESP_LOGD(TAG, "HCPBridgeCover::update() - state is valid");
       if (this->status_has_warning())
       {
         ESP_LOGD(TAG, "HCPBridgeCover::update() - clearing warning");
         this->status_clear_warning();
       }
 
-      switch (this->parent_->engine->state->state) 
+      switch (this->parent_->engine->state->state)
       {
-        case HoermannState::OPENING:
-        case HoermannState::MOVE_VENTING:
-        case HoermannState::MOVE_HALF:
-          this->current_operation = cover::COVER_OPERATION_OPENING;
-          break;
-        case HoermannState::CLOSING:
-          this->current_operation = cover::COVER_OPERATION_CLOSING;
-          break;
-        case HoermannState::OPEN:
-        case HoermannState::CLOSED:
-        case HoermannState::STOPPED:
-        case HoermannState::HALFOPEN:
-        case HoermannState::VENT:
-          this->current_operation = cover::COVER_OPERATION_IDLE;
-          break;
+      case HoermannState::OPENING:
+      case HoermannState::MOVE_VENTING:
+      case HoermannState::MOVE_HALF:
+        this->current_operation = cover::COVER_OPERATION_OPENING;
+        break;
+      case HoermannState::CLOSING:
+        this->current_operation = cover::COVER_OPERATION_CLOSING;
+        break;
+      case HoermannState::OPEN:
+      case HoermannState::CLOSED:
+      case HoermannState::STOPPED:
+      case HoermannState::HALFOPEN:
+      case HoermannState::VENT:
+        this->current_operation = cover::COVER_OPERATION_IDLE;
+        break;
       }
       this->position = this->parent_->engine->state->currentPosition;
       if (this->previousPosition_ != this->position || this->previousOperation_ != this->current_operation)

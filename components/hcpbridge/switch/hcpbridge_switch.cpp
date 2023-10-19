@@ -23,12 +23,11 @@ namespace esphome
         ESP_LOGD(TAG, "HCPBridgeSwitch::update() - clearing warning");
         this->status_clear_warning();
       }
-      this->state = this->parent_->engine->state->lightOn;
-      if (this->previousState_ != this->state)
+      if (this->previousState_ != this->parent_->engine->state->lightOn)
       {
         ESP_LOGD(TAG, "HCPBridgeSwitch::update() - state changed");
-        this->publish_state(false);
-        this->previousState_ = this->state;
+        this->publish_state(this->parent_->engine->state->lightOn);
+        this->previousState_ = this->parent_->engine->state->lightOn;
       }
     }
 
