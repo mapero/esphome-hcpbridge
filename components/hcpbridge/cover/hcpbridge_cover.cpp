@@ -6,12 +6,11 @@ namespace esphome
   {
     static const char *const TAG = "hcpbridge.cover";
 
-
     cover::CoverTraits HCPBridgeCover::get_traits()
     {
       auto traits = cover::CoverTraits();
       traits.set_is_assumed_state(true);
-      traits.set_supports_position(false);
+      traits.set_supports_position(true);
       traits.set_supports_tilt(false);
       return traits;
     }
@@ -32,23 +31,55 @@ namespace esphome
         {
           this->parent_->engine->closeDoor();
         }
+        else {
+          this->parent_->engine->setPosition((int)call.get_position().value() * 100.0f);
+        }
       }
     }
 
     void HCPBridgeCover::update()
     {
-      if (!this->parent_->engine->state->valid) {
+      if (!this->parent_->engine->state->valid)
+      {
         ESP_LOGD(TAG, "HCPBridgeCover::update() - state is invalid");
         this->status_set_warning();
         return;
       }
       ESP_LOGD(TAG, "HCPBridgeCover::update() - state is valid");
-      if (this->status_has_warning()) {
+      if (this->status_has_warning())
+      {
         ESP_LOGD(TAG, "HCPBridgeCover::update() - clearing warning");
         this->status_clear_warning();
       }
-      this->position = this->parent_->engine->state->currentPosition/100.0f;
-      this->publish_state(false);
+
+      switch (this->parent_->engine->state->state) 
+      {
+        case HoermannState::OPENING:
+        case HoermannState::MOVE_VENTING:
+        case HoermannState::MOVE_HALF:
+          this->current_operation = cover::COVER_OPERATION_OPENING;
+          break;
+        case HoermannState::CLOSING:
+          this->current_operation = cover::COVER_OPERATION_CLOSING;
+          break;
+        case HoermannState::OPEN:
+        case HoermannState::CLOSED:
+        case HoermannState::STOPPED:
+        case HoermannState::HALFOPEN:
+        case HoermannState::VENT:
+          this->current_operation = cover::COVER_OPERATION_IDLE;
+          break;
+      }
+      this->position = this->parent_->engine->state->currentPosition;
+      if (this->previousPosition_ != this->position || this->previousOperation_ != this->current_operation)
+      {
+        ESP_LOGV(TAG, "HCPBridgeCover::update() - position is %f", this->position);
+        ESP_LOGV(TAG, "HCPBridgeCover::update() - operation is %d", this->current_operation);
+        ESP_LOGD(TAG, "HCPBridgeCover::update() - state changed");
+        this->publish_state(false);
+        this->previousPosition_ = this->position;
+        this->previousOperation_ = this->current_operation;
+      }
     }
 
   }

@@ -17,6 +17,7 @@ namespace esphome
 
       private:
         HCPBridge *parent_;
+        bool previousState_ = false;
     };
   }
 }

@@ -11,7 +11,7 @@ esphome:
     # board_build.f_flash: 40000000L
 
 external_components:
-  - source: components
+    source: github://mapero/esphome-hcpbridge
 
 esp32:
   board: adafruit_feather_esp32s3
@@ -41,9 +41,6 @@ wifi:
 logger:
   level: DEBUG
   baud_rate: 9600
-  logs:
-    hcpbridge.switch: DEBUG
-    hcpbridge.cover: DEBUG
 
 # Example configuration entry
 ota:

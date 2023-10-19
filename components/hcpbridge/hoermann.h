@@ -76,12 +76,11 @@ public:
         MOVE_HALF,
         STOPPED
     };
+    // All position values are from 0 to 100
     float targetPosition = 0;
     float currentPosition = 0;
     bool lightOn = false;
     State state = CLOSED;
-    String translatedState = "closed";
-    String coverState = "closed";
     String debugMessage = "initial";
     unsigned long lastModbusRespone = 0;
     bool changed = false;
@@ -100,26 +99,6 @@ public:
     void setState(State state);
     void setValid(bool isValid);
 
-    // Function not used not clear if it make sense to use.
-    String isValid();
-
-    // String toStatusJson() {
-    //     DynamicJsonDocument root(1024);
-    //     root["valid"] = this->isValid();
-    //     root["targetPosition"] = (int)(this->targetPosition*100);
-    //     root["currentPosition"] = (int)(this->currentPosition*100);
-    //     root["light"] = lightOn;
-    //     root["state"] = translateState(this->state);
-    //     root["busResponseAge"] = this->responseAge();
-
-    //     String output;
-    //     serializeJson(root, output);
-    //     return output;
-    // }
-
-private:
-    static String translateState(State stateCode);
-    String translateCoverState(State stateCode);
 };
 
 class HoermannGarageEngine

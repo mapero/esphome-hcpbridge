@@ -18,6 +18,8 @@ namespace esphome
 
       private:
         HCPBridge *parent_;
+        float previousPosition_ = 0.0f;
+        cover::CoverOperation previousOperation_ = cover::COVER_OPERATION_IDLE;
     };
   }
 }

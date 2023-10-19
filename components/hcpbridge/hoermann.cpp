@@ -384,99 +384,9 @@ long HoermannState::responseAge()
 void HoermannState::setState(State state)
 {
   this->state = state;
-  this->translatedState = translateState(state);
-  this->coverState = translateCoverState(state);
   this->changed = true;
 }
 void HoermannState::setValid(bool isValid)
 {
   this->valid = isValid;
-}
-
-// Function not used not clear if it make sense to use.
-String HoermannState::isValid()
-{
-  // is valid if age between 0 and 2 second
-  if ((this->responseAge() > 0 && this->responseAge() < 2))
-  {
-    return "true";
-  }
-  else
-  {
-    return "false";
-  }
-}
-
-// String toStatusJson() {
-//     DynamicJsonDocument root(1024);
-//     root["valid"] = this->isValid();
-//     root["targetPosition"] = (int)(this->targetPosition*100);
-//     root["currentPosition"] = (int)(this->currentPosition*100);
-//     root["light"] = lightOn;
-//     root["state"] = translateState(this->state);
-//     root["busResponseAge"] = this->responseAge();
-
-//     String output;
-//     serializeJson(root, output);
-//     return output;
-// }
-
-String HoermannState::translateState(State stateCode)
-{
-  switch (stateCode)
-  {
-  case State::OPENING:
-    return "opening";
-  case State::CLOSING:
-    return "closing";
-  case State::OPEN:
-    return "open";
-  case State::CLOSED:
-    return "closed";
-  case State::HALFOPEN:
-    return "open h";
-  case State::MOVE_VENTING:
-    return "opening v";
-  case State::MOVE_HALF:
-    return "opening h";
-  case State::VENT:
-    return "venting";
-  default:
-    return "stopped";
-  }
-}
-String HoermannState::translateCoverState(State stateCode)
-{
-  switch (stateCode)
-  {
-  case State::OPENING:
-    return "opening";
-  case State::CLOSING:
-    return "closing";
-  case State::OPEN:
-    return "open";
-  case State::CLOSED:
-    return "closed";
-  case State::HALFOPEN:
-    return "open";
-  case State::MOVE_VENTING:
-    return "opening";
-  case State::MOVE_HALF:
-    return "opening";
-  case State::VENT:
-    return "open";
-  default:
-    if (this->currentPosition == this->targetPosition && this->currentPosition == 0.0f)
-    {
-      return "closed";
-    }
-    else if (this->currentPosition == this->targetPosition && this->currentPosition > 0.0f)
-    {
-      return "open";
-    }
-    else
-    {
-      return "stopped";
-    }
-  }
 }
