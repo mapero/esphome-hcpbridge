@@ -9,6 +9,8 @@ This is a esphome-based adaption of the HCPBridge. Credits for the initial devel
 
 ## Usage
 
+### Example esphome configuration
+
 ```
 esphome:
   name: hcpbridge
@@ -58,6 +60,23 @@ logger:
 ota:
   safe_mode: true
 ```
+
+### Cover
+
+The component provides a cover component to control the garage door.
+
+### Switch
+
+The component provides a switch component to turn the light off and on.
+
+### Services
+
+Additionally, when using the cover component, you can use the following services:
+
+- `esphome.hcpbridge_go_to_close`: To close the garage door
+- `esphome.hcpbridge_go_to_half`: To move the garage door to half position
+- `esphome.hcpbridge_go_to_vent`: To move the garage door to the vent position
+- `esphome.hcpbridge_go_to_open`: To open the garage door
 
 # Project
 
