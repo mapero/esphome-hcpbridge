@@ -11,11 +11,11 @@ This is a esphome-based adaption of the HCPBridge. Credits for the initial devel
 
 ### Example esphome configuration
 
-```
+```YAML
 esphome:
   name: hcpbridge
   libraries:
-    - emelianov/modbus-esp8266
+    - emelianov/modbus-esp8266 # Required for communication with the modbus
   platformio_options:
     board_build.f_cpu: 240000000L
     board_build.flash_mode: qio
@@ -26,6 +26,7 @@ esphome:
 
 external_components:
     source: github://mapero/esphome-hcpbridge
+    refresh: 0s # Ensure you always get the latest version
 
 esp32:
   board: adafruit_feather_esp32s3
@@ -33,7 +34,7 @@ esp32:
     type: arduino
 
 hcpbridge:
-  is_connected:
+  is_connected: # Sensor to display the connection status to the motor
     name: "HCPBridge Connected"
 
 cover:
@@ -44,21 +45,12 @@ switch:
   - platform: hcpbridge
     name: Garage Light
 
+# API to communicate with home assistant
 api:
+  encryption:
+    key: !secret api_key
 
-web_server:
-  port: 80
-
-wifi:
-  ssid: !secret wifi_ssid
-  password: !secret wifi_password
-
-# Enable logging
-logger:
-  level: DEBUG
-  baud_rate: 9600
-
-# Example configuration entry
+# Enable OTA updates
 ota:
   safe_mode: true
 ```
@@ -96,7 +88,7 @@ You can find more information on the project here: [Hörmann garage door via MQT
 - [ ] Use esphome modbus component instead of own code
 - [ ] Map additional functions to esphome
 - [ ] Use callbacks instead of pollingComponent
-- [ ] Expert options for the HCPBridge component (GPIOs ...)
+- [x] Expert options for the HCPBridge component (GPIOs ...)
 
 # Contribute
 

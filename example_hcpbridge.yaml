@@ -12,6 +12,7 @@ esphome:
 
 external_components:
     source: github://mapero/esphome-hcpbridge
+    refresh: 0s
 
 esp32:
   board: adafruit_feather_esp32s3
@@ -21,6 +22,8 @@ esp32:
 hcpbridge:
   is_connected:
     name: "HCPBridge Connected"
+  rx_pin: 18 # optional, default=18
+  tx_pin: 17 # optional, default=17
 
 cover:
   - platform: hcpbridge
@@ -31,6 +34,8 @@ switch:
     name: Garage Light
 
 api:
+  encryption:
+    key: !secret api_key
 
 web_server:
   port: 80

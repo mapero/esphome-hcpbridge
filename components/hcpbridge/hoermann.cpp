@@ -36,9 +36,9 @@ HoermannGarageEngine &HoermannGarageEngine::getInstance()
   return instance;
 }
 
-void HoermannGarageEngine::setup()
+void HoermannGarageEngine::setup(int8_t rx, int8_t tx)
 {
-  RS485.begin(57600, SERIAL_8E1, PIN_RXD, PIN_TXD);
+  RS485.begin(57600, SERIAL_8E1, rx, tx);
   mb.begin(&RS485);
   mb.slave(SLAVE_ID);
 

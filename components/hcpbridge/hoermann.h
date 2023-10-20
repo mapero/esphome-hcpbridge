@@ -19,7 +19,7 @@
 #define PIN_RXD 18
 #else
 #define PIN_TXD 17 // UART 2 TXT - G17
-#define PIN_RXD 16 // UART 2 RXD - G16
+#define PIN_RXD 16 // UART 2 RXD - G16 
 #endif
 
 // workaround as my Supramatic did not Report the Status 0x0A when it's en vent Position
@@ -108,7 +108,7 @@ public:
 
     static HoermannGarageEngine& getInstance();
 
-    void setup();
+    void setup(int8_t rx, int8_t tx);
     void handleModbus();
     Modbus::ResultCode onRequest(Modbus::FunctionCode fc, const Modbus::RequestData data);
     void setCommandValuesToRead();
