@@ -4,6 +4,7 @@
 #include "esphome/components/binary_sensor/binary_sensor.h"
 #include "esphome/core/defines.h"
 #include "esphome/core/hal.h"
+#include "esphome/core/log.h"
 
 #include "hoermann.h"
 
