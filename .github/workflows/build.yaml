@@ -13,8 +13,7 @@
         - name: Checkout
           uses: actions/checkout@v3
 
-        - name: Compile for main
-          if: github.ref == 'refs/heads/main'
+        - name: Compile
           uses: esphome/build-action@v1
           with:
             yaml_file: .github/example_build_hcpbridge.yaml
