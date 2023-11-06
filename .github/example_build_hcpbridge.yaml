@@ -1,0 +1,41 @@
+esphome:
+  name: hcpbridge
+  libraries:
+    - emelianov/modbus-esp8266
+  platformio_options:
+    board_build.f_cpu: 240000000L
+    board_build.flash_mode: qio
+    monitor_speed: 9600
+    monitor_filters: esp32_exception_decoder
+    lib_ldf_mode: deep+
+    # board_build.f_flash: 40000000L
+
+external_components:
+  - source:
+      type: local
+      path: "../components/"
+
+esp32:
+  board: adafruit_feather_esp32s3
+  framework:
+    type: arduino
+
+hcpbridge:
+  is_connected:
+    name: "HCPBridge Connected"
+  rx_pin: 18 # optional, default=18
+  tx_pin: 17 # optional, default=17
+
+cover:
+  - platform: hcpbridge
+    name: Garage Door
+
+switch:
+  - platform: hcpbridge
+    name: Garage Light
+
+wifi:
+  ssid: "My Network"
+  password: "My Password"
+
+api:
