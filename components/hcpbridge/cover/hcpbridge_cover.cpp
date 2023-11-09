@@ -65,7 +65,7 @@ namespace esphome
         }
         else
         {
-          this->parent_->engine->setPosition((int)call.get_position().value() * 100.0f);
+          this->parent_->engine->setPosition(call.get_position().value() * 100.0f);
         }
       }
     }
