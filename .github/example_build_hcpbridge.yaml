@@ -29,6 +29,7 @@ hcpbridge:
 cover:
   - platform: hcpbridge
     name: Garage Door
+    id: garagedoor_cover
 
 switch:
   - platform: hcpbridge
@@ -39,3 +40,11 @@ wifi:
   password: "My Password"
 
 api:
+
+
+button:
+  platform: template
+  name: "Garage Door Vent"
+  on_press:
+    - lambda: |-
+        id(garagedoor_cover).on_go_to_vent();
