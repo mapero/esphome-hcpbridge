@@ -7,7 +7,7 @@ namespace esphome
 
     static const char *const TAG = "hcpbridge.button";
 
-    void HCPBridgeButton::press()
+    void HCPBridgeButton::press_action()
     {
       ESP_LOGD(TAG, "HCPBridgeButton::press_action() - trigger vent position");
       this->parent_->engine->ventilationPositionDoor();

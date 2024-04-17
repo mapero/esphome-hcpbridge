@@ -8,11 +8,11 @@ namespace esphome
 {
   namespace hcpbridge
   {
-    class HCPBridgeButton : public button_::Button, public PollingComponent
+    class HCPBridgeButton : public button::Button, public PollingComponent
     {
       public:
         void set_hcpbridge_parent(HCPBridge *parent) { this->parent_ = parent; }
-        void press() override;
+        void press_action() override;
 
       private:
         HCPBridge *parent_;
