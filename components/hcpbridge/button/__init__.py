@@ -6,7 +6,7 @@ from .. import hcpbridge_ns, CONF_HCPBridge_ID, HCPBridge
 
 DEPENDENCIES = ["hcpbridge"]
 
-HCPBridgeButton = hcpbridge_ns.class_("HCPBridgeButton", button.Button, cg.Component)
+HCPBridgeButton = hcpbridge_ns.class_("HCPBridgeButton", button.Button)
 
 CONFIG_SCHEMA = (
     button.button_schema(HCPBridgeButton, icon=ICON_FAN)
@@ -15,7 +15,6 @@ CONFIG_SCHEMA = (
             cv.GenerateID(CONF_HCPBridge_ID): cv.use_id(HCPBridge),
         }
     )
-    .extend(cv.COMPONENT_SCHEMA)
 )
 
 
