@@ -20,7 +20,7 @@ CONFIG_SCHEMA = (
 
 
 async def to_code(config):
-    var = await button.new_switch(config)
+    var = await button.new_button(config)
     await cg.register_component(var, config)
 
     parent = await cg.get_variable(config[CONF_HCPBridge_ID])
