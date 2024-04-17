@@ -8,7 +8,7 @@ namespace esphome
 {
   namespace hcpbridge
   {
-    class HCPBridgeButton : public button::Button
+    class HCPBridgeButton : public button::Button, public Component
     {
       public:
         void set_hcpbridge_parent(HCPBridge *parent) { this->parent_ = parent; }
