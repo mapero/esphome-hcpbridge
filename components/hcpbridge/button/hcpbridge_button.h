@@ -12,7 +12,7 @@ namespace esphome
     {
       public:
         void set_hcpbridge_parent(HCPBridge *parent) { this->parent_ = parent; }
-        void press_action() override;
+        void press() override;
 
       private:
         HCPBridge *parent_;
