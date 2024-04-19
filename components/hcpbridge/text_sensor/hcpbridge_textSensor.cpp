@@ -1,4 +1,4 @@
-#include "hcpbridge_switch.h"
+#include "hcpbridge_textSensor.h"
 
 namespace esphome
 {
