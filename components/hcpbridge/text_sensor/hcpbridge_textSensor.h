@@ -16,7 +16,7 @@ namespace esphome
 
       private:
         HCPBridge *parent_;
-        HoermannState::State previousState_ = 0;
+        HoermannState::State previousState_;
     };
   }
 }
