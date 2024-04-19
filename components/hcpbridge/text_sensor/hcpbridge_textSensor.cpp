@@ -10,7 +10,7 @@ namespace esphome
     void HCPBridgeTextSensor::update() {
       std::string stateText;
 
-      if (this->parent_->engine->state->state != this.previousState_){
+      if (this->parent_->engine->state->state != this->previousState_){
         switch (this->parent_->engine->state->state) {
           case HoermannState::OPENING:
             stateText = "opening";
@@ -44,7 +44,7 @@ namespace esphome
             break;
         }
 
-        this.previousState_ = this->parent_->engine->state->state;
+        this->previousState_ = this->parent_->engine->state->state;
         ESP_LOGD(TAG, "HCPBridgeTextSensor::update() - %s", stateText.c_str());
         this->publish_state(stateText);
       }
