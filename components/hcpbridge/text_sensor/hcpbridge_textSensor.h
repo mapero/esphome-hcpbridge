@@ -8,12 +8,11 @@ namespace esphome
 {
   namespace hcpbridge
   {
-    class HCPBridgeTextSensor : public switch_::Switch, public PollingComponent
+    class HCPBridgeSwitch : public text_sensor::TextSensor, public PollingComponent
     {
       public:
         void set_hcpbridge_parent(HCPBridge *parent) { this->parent_ = parent; }
         void update() override;
-        void write_state(bool state) override;
 
       private:
         HCPBridge *parent_;

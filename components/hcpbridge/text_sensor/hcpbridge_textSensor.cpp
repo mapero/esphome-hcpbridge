@@ -5,7 +5,7 @@ namespace esphome
   namespace hcpbridge
   {
 
-    static const char *const TAG = "hcpbridge.switch";
+    static const char *const TAG = "hcpbridge.text_sensor";
 
     void HCPBridgeTextSensor::update() {
       std::string stateText;
