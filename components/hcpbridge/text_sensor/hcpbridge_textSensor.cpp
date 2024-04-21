@@ -28,7 +28,7 @@ namespace esphome
             stateText = "open";
             break;
           case HoermannState::CLOSED:
-            stateText = "closing";
+            stateText = "closed";
             break;
           case HoermannState::STOPPED:
             stateText = "stopped";
