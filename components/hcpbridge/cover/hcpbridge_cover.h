@@ -17,7 +17,8 @@ namespace esphome
       void set_hcpbridge_parent(HCPBridge *parent) { this->parent_ = parent; }
       void update() override;
       void setup() override;
-
+      bool get_light_state() {return this->parent_->engine->state->lightOn; }
+      void set_light_state(bool state) {this->parent_->engine->turnLight(state);}
       // Home Assistant service handler
       void on_go_to_half();
       void on_go_to_open();

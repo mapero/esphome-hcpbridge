@@ -29,9 +29,49 @@ cover:
   - platform: hcpbridge
     name: Garage Door
 
-switch:
-  - platform: hcpbridge
-    name: Garage Light
+light:
+  - platform: binary
+    output: output_light
+    id: light_1
+    name: Garage Door Light
+
+output:
+  - platform: template
+    type: binary
+    id: output_light
+    write_action:
+      lambda: !lambda |-
+        id(garagedoor_cover).set_light_state(state);
+
+#This sensor is needed to adjust the light state with the one from the motor.
+binary_sensor:
+  - platform: template
+    internal: true 
+    name: "Garage Door Light sensor"
+    device_class: light
+    id: sensor_light
+    lambda: !lambda |-
+      return (id(garagedoor_cover).get_light_state());
+    on_state:
+      if:
+        condition:
+          or:
+            - and:
+              - binary_sensor.is_on: sensor_light
+              - light.is_off: light_1
+            - and:
+              - binary_sensor.is_off: sensor_light
+              - light.is_on: light_1
+        then:
+          - light.toggle: light_1
+
+button:
+  platform: template
+  name: "Garage Door Vent"
+  on_press:
+    - lambda: |-
+        id(garagedoor_cover).on_go_to_vent();
+
 
 api:
   encryption:
