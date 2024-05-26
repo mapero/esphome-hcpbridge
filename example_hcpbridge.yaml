@@ -72,6 +72,9 @@ button:
     - lambda: |-
         id(garagedoor_cover).on_go_to_vent();
 
+text_sensor:
+  - platform: hcpbridge
+    name: "Garage Door State"
 
 api:
   encryption:
