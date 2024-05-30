@@ -23,8 +23,8 @@ hcpbridge:
   is_connected:
     name: "HCPBridge Connected"
     id: hcpbridge_id
-  rx_pin: 5 # optional, default=18
-  tx_pin: 6 # optional, default=17
+  rx_pin: 18 # optional, default=18
+  tx_pin: 17 # optional, default=17
 
 cover:
   - platform: hcpbridge

@@ -37,6 +37,9 @@ esp32:
 hcpbridge:
   is_connected: # Sensor to display the connection status to the motor
     name: "HCPBridge Connected"
+    id: hcpbridge_id
+  rx_pin: 18 # optional, default=18
+  tx_pin: 17 # optional, default=17
 
 cover:
   - platform: hcpbridge
