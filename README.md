@@ -41,10 +41,44 @@ hcpbridge:
 cover:
   - platform: hcpbridge
     name: Garage Door
+    device_class: garage
+    id: garagedoor_cover
 
-switch:
-  - platform: hcpbridge
-    name: Garage Light
+binary_sensor:
+  - platform: template
+    name: "Garage Door Light sensor"
+    internal: true 
+    device_class: light
+    id: sensor_light
+    lambda: !lambda |-
+      return (id(garagedoor_cover).get_light_state());
+    on_state:
+    #needed to correct the state fo the light  
+      if:
+        condition:
+          or:
+            - and:
+              - binary_sensor.is_on: sensor_light
+              - light.is_off: light_1
+            - and:
+              - binary_sensor.is_off: sensor_light
+              - light.is_on: light_1
+        then:
+          - light.toggle: light_1
+
+output:
+  - platform: template
+    type: binary
+    id: output_light
+    write_action:
+      lambda: !lambda |-
+        id(garagedoor_cover).set_light_state(state);
+
+light:
+  - platform: binary
+    output: output_light
+    id: light_1
+    name: Garage Door Light
 
 # API to communicate with home assistant
 api:
@@ -64,9 +98,14 @@ ota:
 
 The component provides a cover component to control the garage door.
 
-### Switch
+### Light
 
-The component provides a switch component to turn the light off and on.
+The component provides a Light component to turn the light off and on.
+
+### Additional Components
+
+Using templates you can also add additional components see example_hcpbridge.yaml
+
 
 ### Services
 
