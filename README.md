@@ -87,10 +87,28 @@ light:
 api:
   encryption:
     key: !secret api_key
+  services:
+    - service: go_to_open
+      then:
+        - lambda: |-
+            id(garagedoor_cover).on_go_to_open();
+    - service: go_to_close
+      then:
+        - lambda: |-
+            id(garagedoor_cover).on_go_to_close();
+    - service: go_to_half
+      then:
+        - lambda: |-
+            id(garagedoor_cover).on_go_to_half();
+    - service: go_to_vent
+      then:
+        - lambda: |-
+            id(garagedoor_cover).on_go_to_vent();
 
 # Enable OTA updates
 ota:
-  safe_mode: true
+  - platform: esphome
+    safe_mode: true
 ```
 
 ### Home Assistant

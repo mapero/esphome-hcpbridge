@@ -6,14 +6,6 @@ namespace esphome
   {
     static const char *const TAG = "hcpbridge.cover";
 
-    void HCPBridgeCover::setup()
-    {
-      register_service(&HCPBridgeCover::on_go_to_open, "go_to_open");
-      register_service(&HCPBridgeCover::on_go_to_close, "go_to_close");
-      register_service(&HCPBridgeCover::on_go_to_half, "go_to_half");
-      register_service(&HCPBridgeCover::on_go_to_vent, "go_to_vent");
-    }
-
     void HCPBridgeCover::on_go_to_open()
     {
       ESP_LOGD(TAG, "HCPBridgeCover::on_go_to_open() - opening");

@@ -2,21 +2,19 @@
 
 #include "esphome/core/component.h"
 #include "esphome/components/cover/cover.h"
-#include "esphome/components/api/custom_api_device.h"
 #include "../hcpbridge.h"
 
 namespace esphome
 {
   namespace hcpbridge
   {
-    class HCPBridgeCover : public cover::Cover, public PollingComponent, public api::CustomAPIDevice
+    class HCPBridgeCover : public cover::Cover, public PollingComponent
     {
     public:
       cover::CoverTraits get_traits() override;
       void control(const cover::CoverCall &call) override;
       void set_hcpbridge_parent(HCPBridge *parent) { this->parent_ = parent; }
       void update() override;
-      void setup() override;
       bool get_light_state() {return this->parent_->engine->state->lightOn; }
       void set_light_state(bool state) {this->parent_->engine->turnLight(state);}
       HoermannState::State get_cover_state() {return this->parent_->engine->state->state;}
