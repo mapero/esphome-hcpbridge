@@ -31,6 +31,7 @@ namespace esphome
         binary_sensor::BinarySensor *is_connected_;
         InternalGPIOPin *tx_pin_;
         InternalGPIOPin *rx_pin_;
+        InternalGPIOPin *rts_pin_;
     };
   }
 }
