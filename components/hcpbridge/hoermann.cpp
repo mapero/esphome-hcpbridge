@@ -39,7 +39,7 @@ HoermannGarageEngine &HoermannGarageEngine::getInstance()
 void HoermannGarageEngine::setup(int8_t rx, int8_t tx)
 {
   RS485.begin(57600, SERIAL_8E1, rx, tx);
-  mb.begin(&RS485);
+  mb.begin(&RS485, PIN_RTS, true);
   mb.slave(SLAVE_ID);
 
   xTaskCreatePinnedToCore(

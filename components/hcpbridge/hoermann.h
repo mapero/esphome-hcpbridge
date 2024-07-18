@@ -15,9 +15,11 @@
 
 #define RS485 Serial2
 #ifdef CONFIG_IDF_TARGET_ESP32S3
+#define PIN_RTS 16
 #define PIN_TXD 17
 #define PIN_RXD 18
 #else
+#define PIN_RTS 2  // UART 2 RTS - G2
 #define PIN_TXD 17 // UART 2 TXT - G17
 #define PIN_RXD 16 // UART 2 RXD - G16 
 #endif
