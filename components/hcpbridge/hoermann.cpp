@@ -240,21 +240,31 @@ uint16_t HoermannGarageEngine::onCurrentStateChanged(TRegister *reg, uint16_t va
 }
 
 uint16_t HoermannGarageEngine::onRegSevenChanged(TRegister *reg, uint16_t val)
-//first byte option relay state
-//secon byte light state
+  //Observed Values, last bit 4 is assumed could not be tested as I have no UAP HCP.
+  //0x00 0x00 Relay off - Light off
+  //0x02 0x00 Relay on  - light off
+  //0x02 0x10 Relay on  - light on
+  //0x00 0x10 Relay off - light on
+
+  //below two code I'm not sure about the correct interpretation.
+  //0x00 0x14 Relay on  - light on 
+  //0x00 0x04 Relay on  - light off
+
 {
   if ((reg->value & 0xFF00) != (val & 0xFF00)){
+    // 0x02 happen when relay menu 30 is set to 06, 07, 10 
     this->state->setRelayOn((val & 0xFF00) >> 8 == 0x02);
   }
   // On second byte changed
   if ((reg->value & 0x00FF) != (val & 0x00FF))
   {
     ESP_LOGI(TAG_HCI, "onRegSixChanged. address=%x, value=%x", reg->address.address, val);
-    // 14 .. from docs (a indicator for automatic state maby?)
-    // 10 .. on after turn on
-    // 04 .. shut down after inactivy
-    // 00 .. off after turn off
+    // 14 .. Internal light on External light on
+    // 10 .. Internal light on External light off
+    // 04 .. Internal light on External light off
+    // 00 .. Internal light off External light off
     this->state->setLigthOn((val & 0x00FF) == 0x14 || (val & 0x00FF) == 0x10);
+    this->state->setsetRelayOn((val & 0xFF00) >> 8 == 0x02 || (val & 0x00FF) == 0x14 || (val & 0x00FF) == 0x04); 
   }
   return val;
 }
