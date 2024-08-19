@@ -78,7 +78,7 @@ void HoermannGarageEngine::setup(int8_t rx, int8_t tx)
       0x01);
   mb.onSet(
       HREG(0x9D31 + 6), [this](TRegister *reg, uint16_t val) -> uint16_t
-      { return this->onLampState(reg, val); },
+      { return this->onRegSevenChanged(reg, val); }, // Relay and Light state
       0x01);
 }
 
@@ -239,12 +239,17 @@ uint16_t HoermannGarageEngine::onCurrentStateChanged(TRegister *reg, uint16_t va
   return val;
 }
 
-uint16_t HoermannGarageEngine::onLampState(TRegister *reg, uint16_t val)
+uint16_t HoermannGarageEngine::onRegSevenChanged(TRegister *reg, uint16_t val)
+//first byte option relay state
+//secon byte light state
 {
+  if ((reg->value & 0xFF00) != (val & 0xFF00)){
+    this->state->setRelayOn((val & 0xFF00) >> 8 == 0x02);
+  }
   // On second byte changed
   if ((reg->value & 0x00FF) != (val & 0x00FF))
   {
-    ESP_LOGI(TAG_HCI, "onLampState. address=%x, value=%x", reg->address.address, val);
+    ESP_LOGI(TAG_HCI, "onRegSixChanged. address=%x, value=%x", reg->address.address, val);
     // 14 .. from docs (a indicator for automatic state maby?)
     // 10 .. on after turn on
     // 04 .. shut down after inactivy
@@ -353,6 +358,11 @@ void HoermannState::setCurrentPosition(float currentPosition)
 void HoermannState::setLigthOn(bool lightOn)
 {
   this->lightOn = lightOn;
+  this->changed = true;
+}
+void HoermannState::setRelayOn(bool relayOn)
+{
+  this->relayOn = relayOn;
   this->changed = true;
 }
 void HoermannState::recordModbusResponse()
