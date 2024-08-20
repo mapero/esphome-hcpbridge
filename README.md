@@ -40,6 +40,7 @@ hcpbridge:
     id: hcpbridge_id
   rx_pin: 18 # optional, default=18
   tx_pin: 17 # optional, default=17
+  #rts_pin : 1 # optional RTS pin to use if hardware automatic control flow is not available.
 
 cover:
   - platform: hcpbridge
@@ -74,7 +75,7 @@ binary_sensor:
     lambda: !lambda |-
       return (id(garagedoor_cover).get_relay_state());
     #on_state:
-    #crete your automation based on relay state  
+    #create your automation based on relay state  
 
 output:
   - platform: template
@@ -132,7 +133,8 @@ The component provides a Light component to turn the light off and on.
 
 ### Additional Components
 
-Using templates you can also add additional components see example_hcpbridge.yaml
+Information like the current position or the state of the option relay (Menu 30) cann be add using Templates.
+Check out the [example_hcpbridge.yaml](./example_hcpbridge.yaml) for some implementations.
 
 
 ### Services
