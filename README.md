@@ -133,7 +133,7 @@ The component provides a Light component to turn the light off and on.
 
 ### Additional Components
 
-Information like the current position or the state of the option relay (Menu 30) cann be add using Templates.
+Information like the current position or the state of the option relay (Menu 30) can be added using Templates.
 Check out the [example_hcpbridge.yaml](./example_hcpbridge.yaml) for some implementations.
 
 
