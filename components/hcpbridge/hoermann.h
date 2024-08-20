@@ -110,7 +110,7 @@ public:
 
     static HoermannGarageEngine& getInstance();
 
-    void setup(int8_t rx, int8_t tx);
+    void setup(int8_t rx, int8_t tx, int8_t rts);
     void handleModbus();
     Modbus::ResultCode onRequest(Modbus::FunctionCode fc, const Modbus::RequestData data);
     void setCommandValuesToRead();
