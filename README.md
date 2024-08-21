@@ -26,7 +26,7 @@ esphome:
     # board_build.f_flash: 40000000L
 
 external_components:
-    source: github://mapero/esphome-hcpbridge
+    source: github://14yannick/esphome-hcpbridge
     refresh: 0s # Ensure you always get the latest version
 
 esp32:
