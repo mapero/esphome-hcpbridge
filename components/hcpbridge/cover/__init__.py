@@ -12,10 +12,12 @@ DEPENDENCIES = ['hcpbridge']
 HCPBridgeCover = hcpbridge_ns.class_("HCPBridgeCover", cover.Cover, cg.PollingComponent)
 
 CONFIG_SCHEMA = cv.All(
-  cover.COVER_SCHEMA.extend({
-    cv.GenerateID(): cv.declare_id(HCPBridgeCover),
-    cv.GenerateID(CONF_HCPBridge_ID): cv.use_id(HCPBridge),
-  }).extend(cv.polling_component_schema("500ms")),
+  cover.cover_schema(HCPBridgeCover)
+  .extend(
+      {
+        cv.GenerateID(CONF_HCPBridge_ID): cv.use_id(HCPBridge),
+      }
+  ).extend(cv.polling_component_schema("500ms")),
 )
 
 async def to_code(config):
