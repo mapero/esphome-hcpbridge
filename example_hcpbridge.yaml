@@ -7,7 +7,7 @@ esphome:
     board_build.flash_mode: qio
     monitor_speed: 9600
     monitor_filters: esp32_exception_decoder
-    lib_ldf_mode: deep+
+    # lib_ldf_mode: deep+
     # board_build.f_flash: 40000000L
 
 external_components:
@@ -36,6 +36,7 @@ switch:
 api:
   encryption:
     key: !secret api_key
+  custom_services: true
 
 web_server:
   port: 80
@@ -54,5 +55,6 @@ logger:
 
 # Example configuration entry
 ota:
-  safe_mode: true
+ - platform: esphome
 
+safe_mode:
