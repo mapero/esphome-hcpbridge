@@ -37,23 +37,86 @@ esp32:
 hcpbridge:
   is_connected: # Sensor to display the connection status to the motor
     name: "HCPBridge Connected"
+    id: hcpbridge_id
+  rx_pin: 18 # optional, default=18
+  tx_pin: 17 # optional, default=17
+  #rts_pin : 1 # optional RTS pin to use if hardware automatic control flow is not available.
 
 cover:
   - platform: hcpbridge
     name: Garage Door
+    device_class: garage
+    id: garagedoor_cover
 
-switch:
-  - platform: hcpbridge
-    name: Garage Light
+binary_sensor:
+  - platform: template
+    name: "Garage Door Light sensor"
+    internal: true 
+    device_class: light
+    id: sensor_light
+    lambda: !lambda |-
+      return (id(garagedoor_cover).get_light_state());
+    on_state:
+    #needed to correct the state fo the light  
+      if:
+        condition:
+          or:
+            - and:
+              - binary_sensor.is_on: sensor_light
+              - light.is_off: light_1
+            - and:
+              - binary_sensor.is_off: sensor_light
+              - light.is_on: light_1
+        then:
+          - light.toggle: light_1
+  - platform: template
+    name: "relay state"
+    id: sensor_relay
+    lambda: !lambda |-
+      return (id(garagedoor_cover).get_relay_state());
+    #on_state:
+    #create your automation based on relay state  
+
+output:
+  - platform: template
+    type: binary
+    id: output_light
+    write_action:
+      lambda: !lambda |-
+        id(garagedoor_cover).set_light_state(state);
+
+light:
+  - platform: binary
+    output: output_light
+    id: light_1
+    name: Garage Door Light
 
 # API to communicate with home assistant
 api:
   encryption:
     key: !secret api_key
+  services:
+    - service: go_to_open
+      then:
+        - lambda: |-
+            id(garagedoor_cover).on_go_to_open();
+    - service: go_to_close
+      then:
+        - lambda: |-
+            id(garagedoor_cover).on_go_to_close();
+    - service: go_to_half
+      then:
+        - lambda: |-
+            id(garagedoor_cover).on_go_to_half();
+    - service: go_to_vent
+      then:
+        - lambda: |-
+            id(garagedoor_cover).on_go_to_vent();
 
 # Enable OTA updates
 ota:
-  safe_mode: true
+  - platform: esphome
+    safe_mode: true
 ```
 
 ### Home Assistant
@@ -64,9 +127,15 @@ ota:
 
 The component provides a cover component to control the garage door.
 
-### Switch
+### Light
 
-The component provides a switch component to turn the light off and on.
+The component provides a Light component to turn the light off and on.
+
+### Additional Components
+
+Information like the current position or the state of the option relay (Menu 30) can be added using Templates.
+Check out the [example_hcpbridge.yaml](./example_hcpbridge.yaml) for some implementations.
+
 
 ### Services
 

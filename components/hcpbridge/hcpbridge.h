@@ -22,6 +22,7 @@ namespace esphome
         void set_is_connected(binary_sensor::BinarySensor *is_connected) { this->is_connected_ = is_connected; }
         void set_tx_pin(InternalGPIOPin *tx_pin) { this->tx_pin_ = tx_pin; }
         void set_rx_pin(InternalGPIOPin *rx_pin) { this->rx_pin_ = rx_pin; }
+        void set_rts_pin(InternalGPIOPin *rts_pin) { this->rts_pin_ = rts_pin; }
 
 
         HoermannGarageEngine* engine;
@@ -30,6 +31,7 @@ namespace esphome
         binary_sensor::BinarySensor *is_connected_;
         InternalGPIOPin *tx_pin_;
         InternalGPIOPin *rx_pin_;
+        InternalGPIOPin *rts_pin_;
     };
   }
 }

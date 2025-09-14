@@ -80,6 +80,7 @@ public:
     float targetPosition = 0;
     float currentPosition = 0;
     bool lightOn = false;
+    bool relayOn = false;
     State state = CLOSED;
     String debugMessage = "initial";
     unsigned long lastModbusRespone = 0;
@@ -92,6 +93,7 @@ public:
     void setGotoPosition(float setPosition);
     void setCurrentPosition(float currentPosition);
     void setLigthOn(bool lightOn);
+    void setRelayOn(bool relayOn);
     void recordModbusResponse();
     void clearChanged();
     void clearDebug();
@@ -108,13 +110,13 @@ public:
 
     static HoermannGarageEngine& getInstance();
 
-    void setup(int8_t rx, int8_t tx);
+    void setup(int8_t rx, int8_t tx, int8_t rts);
     void handleModbus();
     Modbus::ResultCode onRequest(Modbus::FunctionCode fc, const Modbus::RequestData data);
     void setCommandValuesToRead();
     uint16_t onDoorPositonChanged(TRegister *reg, uint16_t val);
     uint16_t onCurrentStateChanged(TRegister *reg, uint16_t val);
-    uint16_t onLampState(TRegister *reg, uint16_t val);
+    uint16_t onRegSevenChanged(TRegister *reg, uint16_t val);
 
     /**
      * Write on 0x9C41 , byte1: counter, byte2: command

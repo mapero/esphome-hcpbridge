@@ -22,20 +22,161 @@ esp32:
 hcpbridge:
   is_connected:
     name: "HCPBridge Connected"
+    id: hcpbridge_id
   rx_pin: 18 # optional, default=18
   tx_pin: 17 # optional, default=17
+  #rts_pin : 1 # optional RTS pin to use if hardware automatic control flow is not available.
 
 cover:
   - platform: hcpbridge
     name: Garage Door
+    device_class: garage
+    id: garagedoor_cover
+
+binary_sensor:
+  - platform: template
+    name: "Garage Door Light sensor"
+    internal: true 
+    device_class: light
+    id: sensor_light
+    lambda: !lambda |-
+      return (id(garagedoor_cover).get_light_state());
+    on_state:
+    #needed to correct the state fo the light  
+      if:
+        condition:
+          or:
+            - and:
+              - binary_sensor.is_on: sensor_light
+              - light.is_off: light_1
+            - and:
+              - binary_sensor.is_off: sensor_light
+              - light.is_on: light_1
+        then:
+          - light.toggle: light_1
+  - platform: template
+    name: "relay state"
+    id: sensor_relay
+    lambda: !lambda |-
+      return (id(garagedoor_cover).get_relay_state());
+    #on_state:
+    #create your automation based on relay state  
+
+output:
+  - platform: template
+    type: binary
+    id: output_light
+    write_action:
+      lambda: !lambda |-
+        id(garagedoor_cover).set_light_state(state);
+
+light:
+  - platform: binary
+    output: output_light
+    id: light_1
+    name: Garage Door Light
+
+button:
+  platform: template
+  id: button_vent
+  name: "Garage Door Vent"
+  on_press:
+    - lambda: |-
+        id(garagedoor_cover).on_go_to_vent();
+
+text_sensor:
+  - platform: template
+    id: sensor_templ_state
+    name: "Garage Door State"
+    update_interval: 5s
+    filters:
+      - lambda: |-
+          static std::string last;
+          if (x == last)
+            return {};
+          last = x;
+          return x;
+    lambda: |-
+      std::string stateText;
+      switch (id(garagedoor_cover).get_cover_state()) {
+          case HoermannState::OPENING:
+            stateText = "opening";
+            break;
+          case HoermannState::MOVE_VENTING:
+            stateText = "move venting";
+            break;
+          case HoermannState::MOVE_HALF:
+            stateText = "move half";
+            break;
+          case HoermannState::CLOSING:
+            stateText = "closing";
+            break;
+          case HoermannState::OPEN:
+            stateText = "open";
+            break;
+          case HoermannState::CLOSED:
+            stateText = "closed";
+            break;
+          case HoermannState::STOPPED:
+            stateText = "stopped";
+            break;
+          case HoermannState::HALFOPEN:
+            stateText = "half open";
+            break;
+          case HoermannState::VENT:
+            stateText = "venting";
+            break;
+          default:
+            stateText = "unknown";
+            break;
+        }
+      return {stateText};
+
 
 switch:
-  - platform: hcpbridge
-    name: Garage Light
+  - platform: template
+    id: switch_vent
+    name: "Venting"
+    lambda: |-
+      return (id(garagedoor_cover).get_cover_state() == HoermannState::VENT);
+    optimistic: True
+    turn_on_action:
+      - lambda: |-
+          if (id(garagedoor_cover).get_cover_state() != HoermannState::VENT) {
+            id(garagedoor_cover).on_go_to_vent();
+          }
+    turn_off_action:
+      #without wait device not booting
+      - wait_until:
+          condition:
+            binary_sensor.is_on: hcpbridge_id
+      - if:
+          condition:
+            lambda :  |-
+              return (id(garagedoor_cover).position != COVER_CLOSED);
+          then:
+            - cover.close: garagedoor_cover
 
 api:
   encryption:
     key: !secret api_key
+  services:
+    - service: go_to_open
+      then:
+        - lambda: |-
+            id(garagedoor_cover).on_go_to_open();
+    - service: go_to_close
+      then:
+        - lambda: |-
+            id(garagedoor_cover).on_go_to_close();
+    - service: go_to_half
+      then:
+        - lambda: |-
+            id(garagedoor_cover).on_go_to_half();
+    - service: go_to_vent
+      then:
+        - lambda: |-
+            id(garagedoor_cover).on_go_to_vent();
 
 web_server:
   port: 80
@@ -54,5 +195,6 @@ logger:
 
 # Example configuration entry
 ota:
-  safe_mode: true
+  - platform: esphome
+    safe_mode: true
 

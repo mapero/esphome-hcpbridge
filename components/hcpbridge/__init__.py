@@ -13,6 +13,7 @@ from esphome.const import (
 AUTO_LOAD = ["binary_sensor"]
 
 CONF_IS_CONNECTED = "is_connected"
+CONF_RTS_PIN = "rts_pin"
 
 
 hcpbridge_ns = cg.esphome_ns.namespace("hcpbridge")
@@ -28,6 +29,7 @@ CONFIG_SCHEMA = (
             ),
     cv.Optional(CONF_RX_PIN): pins.gpio_input_pin_schema,
     cv.Optional(CONF_TX_PIN): pins.gpio_output_pin_schema,
+    cv.Optional(CONF_RTS_PIN): pins.gpio_output_pin_schema,
   })
 )
 
@@ -44,3 +46,6 @@ async def to_code(config):
   if CONF_TX_PIN in config:
     tx_pin = await cg.gpio_pin_expression(config[CONF_TX_PIN])
     cg.add(var.set_tx_pin(tx_pin))
+  if CONF_RTS_PIN in config:
+    rts_pin = await cg.gpio_pin_expression(config[CONF_RTS_PIN])
+    cg.add(var.set_rts_pin(rts_pin))
