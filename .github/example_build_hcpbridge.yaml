@@ -7,8 +7,6 @@ esphome:
     board_build.flash_mode: qio
     monitor_speed: 9600
     monitor_filters: esp32_exception_decoder
-    lib_ldf_mode: deep+
-    # board_build.f_flash: 40000000L
 
 external_components:
   - source:
@@ -40,7 +38,7 @@ wifi:
   password: "My Password"
 
 api:
-
+  custom_services: true
 
 button:
   platform: template

@@ -14,6 +14,6 @@
           uses: actions/checkout@v5
 
         - name: Compile
-          uses: esphome/build-action@v1
+          uses: esphome/build-action@v7
           with:
-            yaml_file: .github/example_build_hcpbridge.yaml
+            yaml-file: .github/example_build_hcpbridge.yaml
